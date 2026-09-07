@@ -36,6 +36,8 @@ Ej-
 **Salidas**
 
  - racha1 - numero entero
+ 
+ .............................
  - AVANCE 2
  - proyecto_habitos.py
 
