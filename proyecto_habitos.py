@@ -1,23 +1,23 @@
-#Algoritmo tracker de habitos con rachas
 import time
 
-# damos valor a variables globales
+#valor variables globales
 racha_dormir=0
 racha_ejercicio=0
 
 #.....................................................
 
-#definimos la funcion de menu inicial
+#funcion de menu inicial
 
 def mostrar_menu_inicial():
     print("Bienvenido al tracker de habitos. Tu mejor version te espera!!")
     print("1. Dormir 8 Horas")
     print("2. Ejercicio Semanal")
-    return int(input("Escoge tu primer habito: "))
+    print("3. Cerrar Mi Tracker")
+    return int(input("Escoge tu habito: "))
 
 #......................................................
 
-# definimos el contador de horas dormidas
+#contador de horas dormidas
 
 def contador_horas_dormidas(horas):
     contador_dormir=0
@@ -29,7 +29,7 @@ def contador_horas_dormidas(horas):
 
 #......................................................
 
-# definimos la funcion de menu horas de ejercicio
+#funcion de menu horas de ejercicio
 
 def minutos_diarias_ejercicio():
     print("Cuantos minutos de ejercicio planeas hacer al día en un rango de 45-120?")
@@ -43,7 +43,7 @@ def minutos_diarias_ejercicio():
 
 #......................................................
 
-#definimos contador de ejercicio
+#contador de ejercicio
 
 def contador_minutos_ejercicio(minutos):
     contador_ejercicio=0
@@ -56,36 +56,37 @@ def contador_minutos_ejercicio(minutos):
 #......................................................
 
 #PROCEDIMIENTO PRINCIPAL DEL PROGRAMA
-
-opcion=mostrar_menu_inicial()
-
-#procedimiento al escoger habito dormir
-
-if opcion==1:
-    print("Buena Elección!! Dormir 8 horas definitivamente mejorara tu ritmo de vida. ")
-    print("Cumple con tu hábito hoy y desbloquea tu primer día de racha. ")
-    when= input("Quieres empezar tu ciclo de sueño? (si/no): ")
-    if when=="si":
-        contador_horas_dormidas(8)
-        racha_dormir+=1
-        print(f"Felicidades!! Has completado tu primer día de racha. Tu racha actual es de {racha_dormir} días.") 
-        print(f"Disfruta tu día! No querras perder tu racha de {racha_dormir} días, te esperamos de nuevo. ") 
+while True:
+    opcion=mostrar_menu_inicial()
+    
+    #proceso dormir 8 horas
+    if opcion==1:
+        print("Buena Elección!! Dormir 8 horas definitivamente mejorara tu ritmo de vida. ")
+        print("Cumple con tu hábito hoy y desbloquea tu primer día de racha. ")
+        when= input("Quieres empezar tu ciclo de sueño? (si/no): ")
+        if when=="si":
+            contador_horas_dormidas(8)
+            racha_dormir+=1
+            print(f"Felicidades!! Has completado tu primer día de racha. Tu racha actual es de {racha_dormir} días.") 
+            print(f"Disfruta tu día! No querras perder tu racha de {racha_dormir} días, te esperamos de nuevo. ") 
 
 #......................................................
 
 #procedimiento al escoger habito ejercicio
 
-if opcion==2:
-    print("Excelente Elección!! Hacer ejercicio te mantendra activo durante el día. ")
-    opcion=minutos_diarias_ejercicio()
-    print("Cumple con tu hábito hoy y desbloquea tu primer día de racha. ")
-    when= input("Quieres empezar tu ciclo de ejercicio? (si/no): ")
-    if when=="si":
-        contador_minutos_ejercicio(opcion)
-        racha_ejercicio+=1
-        print(f"Felicidades!! Has completado tu primer día de racha. Tu racha actual es de {racha_ejercicio} días.") 
-        print(f"Disfruta tu día! No querras perder tu racha de {racha_ejercicio} días, te esperamos de nuevo. ")
-    
-       
-    
+    elif opcion==2:
+        print("Excelente Elección!! Hacer ejercicio te mantendra activo durante el día. ")
+        opcion=minutos_diarias_ejercicio()
+        print("Cumple con tu hábito hoy y desbloquea tu primer día de racha. ")
+        when= input("Quieres empezar tu ciclo de ejercicio? (si/no): ")
+        if when=="si":
+            contador_minutos_ejercicio(opcion)
+            racha_ejercicio+=1
+            print(f"Felicidades!! Has completado tu primer día de racha. Tu racha actual es de {racha_ejercicio} días.") 
+            print(f"Disfruta tu día! No querras perder tu racha de {racha_ejercicio} días, te esperamos de nuevo. ")
 
+    elif opcion==3:
+        print("La Diciplina No Es Una Opción, Nos Vemos Luego Guerrrero!")
+        break   
+    else:
+        print("Opción inválida. Por favor, selecciona una opción válida del menú.")
