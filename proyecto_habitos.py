@@ -56,6 +56,7 @@ def contador_minutos_ejercicio(minutos):
 #......................................................
 
 #PROCEDIMIENTO PRINCIPAL DEL PROGRAMA
+
 while True:
     opcion=mostrar_menu_inicial()
     
@@ -69,6 +70,16 @@ while True:
             racha_dormir+=1
             print(f"Felicidades!! Has completado tu primer día de racha. Tu racha actual es de {racha_dormir} días.") 
             print(f"Disfruta tu día! No querras perder tu racha de {racha_dormir} días, te esperamos de nuevo. ") 
+            def rango_dormir(racha_dormir):
+                if racha_dormir >= 30:
+                    return "Tu Rango Actual: Lider"
+                elif racha_dormir >= 14:
+                    return "Tu Rango Actual: Maestro"
+                elif racha_dormir >= 7:
+                    return "Tu Rango Actual: Contendiente"
+                elif racha_dormir >= 1:
+                    return "Tu Rango Actual: Promesa"
+            print(rango_dormir(racha_dormir))
 
 #......................................................
 
@@ -84,6 +95,20 @@ while True:
             racha_ejercicio+=1
             print(f"Felicidades!! Has completado tu primer día de racha. Tu racha actual es de {racha_ejercicio} días.") 
             print(f"Disfruta tu día! No querras perder tu racha de {racha_ejercicio} días, te esperamos de nuevo. ")
+            def rango_ejercicio(racha_ejercicio):
+                if racha_ejercicio >= 30:
+                    return "Tu Rango Actual: Lider"
+                elif racha_ejercicio >= 14:
+                    return "Tu Rango Actual: Maestro"
+                elif racha_ejercicio >= 7:
+                    return "Tu Rango Actual: Contendiente"
+                elif racha_ejercicio >= 1:
+                    return "Tu Rango Actual: Promesa"
+            print(rango_ejercicio(racha_ejercicio))
+
+#......................................................
+
+#cerrar el programa
 
     elif opcion==3:
         print("La Diciplina No Es Una Opción, Nos Vemos Luego Guerrrero!")
