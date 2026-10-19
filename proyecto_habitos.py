@@ -1,117 +1,149 @@
 import time
 
-#valor variables globales
-racha_dormir=0
-racha_ejercicio=0
+# variables globales
+racha_dormir = 0
+racha_ejercicio = 0
 
-#.....................................................
+# Listas para almacenar el historial de registros de cada hábito
+historial_dormir = []
+historial_ejercicio = []
 
-#funcion de menu inicial
+# Lista de tuplas 
+RANGOS = [
+    (30, "Líder"),
+    (14, "Maestro"),
+    (7, "Contendiente"),
+    (1, "Promesa")
+]
 
+# Lista menú inicial
+OPCIONES_MENU = [
+    "1. Dormir 8 Horas",
+    "2. Ejercicio Semanal",
+    "3. Ver Historial de Hábitos",
+    "4. Cerrar Mi Tracker"
+]
+
+# .....................................................
+
+# Obtener Rango
+def obtener_rango(racha):
+    for dias, rango in RANGOS:
+        if racha >= dias:
+            return f"Tu Rango Actual: {rango}"
+    return "Tu Rango Actual: Sin Rango"
+
+# .....................................................
+
+# Menu Inicial
 def mostrar_menu_inicial():
-    print("Bienvenido al tracker de habitos. Tu mejor version te espera!!")
-    print("1. Dormir 8 Horas")
-    print("2. Ejercicio Semanal")
-    print("3. Cerrar Mi Tracker")
-    return int(input("Escoge tu habito: "))
+    print("\n" + "="*40)
+    print("Bienvenido al tracker de hábitos. ¡¡Tu mejor versión te espera!!")
+    for opcion in OPCIONES_MENU:
+        print(opcion)
+    print("="*40)
+    try:
+        return int(input("Escoge tu opción: "))
+    except ValueError:
+        return 0
 
-#......................................................
+# .....................................................
 
-#contador de horas dormidas
-
+# Contador de horas dormidas
 def contador_horas_dormidas(horas):
-    contador_dormir=0
+    contador_dormir = 0
     while contador_dormir < horas:
-        time.sleep(1)  
+        time.sleep(0.5)  # Ajustado para pruebas
         contador_dormir += 1
         print(f"Has dormido: {contador_dormir} horas")
     return contador_dormir
 
-#......................................................
+# .....................................................
 
-#funcion de menu horas de ejercicio
-
+# Menu Ejercicio
 def minutos_diarias_ejercicio():
-    print("Cuantos minutos de ejercicio planeas hacer al día en un rango de 45-120?")
-    minutos_ejercicio = int(input())
-    if minutos_ejercicio < 45 or minutos_ejercicio > 120:
-        print("Por favor ingresa un valor entre 45 y 120 minutos.")
-        return minutos_diarias_ejercicio()  # Llamada recursiva para volver a pedir el valor
-    else:
-        print(f"Excelente! Ahora deberas hacer {minutos_ejercicio} minutos de ejercicio al día para mantener tu racha.")
-        return minutos_ejercicio
+    while True:
+        try:
+            minutos_ejercicio = int(input("¿Cuántos minutos de ejercicio planeas hacer al día (rango 45-120)?: "))
+            if 45 <= minutos_ejercicio <= 120:
+                print(f"¡Excelente! Ahora deberás hacer {minutos_ejercicio} minutos al día.")
+                return minutos_ejercicio
+            else:
+                print("Por favor ingresa un valor entre 45 y 120 minutos.")
+        except ValueError:
+            print("Por favor, ingresa un número entero válido.")
 
-#......................................................
+# .....................................................
 
-#contador de ejercicio
-
+# Contador de ejercicio
 def contador_minutos_ejercicio(minutos):
-    contador_ejercicio=0
+    contador_ejercicio = 0
     while contador_ejercicio < minutos:
-        time.sleep(0.1)  
+        time.sleep(0.05)  
         contador_ejercicio += 1
         print(f"Minutos de ejercicio completados: {contador_ejercicio}")
     return contador_ejercicio
 
-#......................................................
+# .....................................................
 
-#PROCEDIMIENTO PRINCIPAL DEL PROGRAMA
+# Mostrar Historial
+def mostrar_historial():
+    print("\n--- HISTORIAL DE REGISTROS ---")
+    
+    print("\nRegistros de Sueño:")
+    if not historial_dormir:
+        print("  Aún no hay registros de sueño.")
+    else:
+        for i, horas in enumerate(historial_dormir, start=1):
+            print(f"  Día {i}: {horas} horas completadas.")
+
+    print("\nRegistros de Ejercicio:")
+    if not historial_ejercicio:
+        print("  Aún no hay registros de ejercicio.")
+    else:
+        for i, mins in enumerate(historial_ejercicio, start=1):
+            print(f"  Sesión {i}: {mins} minutos completados.")
+
+# .....................................................
+
+# PROCEDIMIENTO PRINCIPAL DEL PROGRAMA
 
 while True:
-    opcion=mostrar_menu_inicial()
+    opcion = mostrar_menu_inicial()
     
-    #proceso dormir 8 horas
-    if opcion==1:
-        print("Buena Elección!! Dormir 8 horas definitivamente mejorara tu ritmo de vida. ")
-        print("Cumple con tu hábito hoy y desbloquea tu primer día de racha. ")
-        when= input("Quieres empezar tu ciclo de sueño? (si/no): ")
-        if when=="si":
-            contador_horas_dormidas(8)
-            racha_dormir+=1
-            print(f"Felicidades!! Has completado tu primer día de racha. Tu racha actual es de {racha_dormir} días.") 
-            print(f"Disfruta tu día! No querras perder tu racha de {racha_dormir} días, te esperamos de nuevo. ") 
-            def rango_dormir(racha_dormir):
-                if racha_dormir >= 30:
-                    return "Tu Rango Actual: Lider"
-                elif racha_dormir >= 14:
-                    return "Tu Rango Actual: Maestro"
-                elif racha_dormir >= 7:
-                    return "Tu Rango Actual: Contendiente"
-                elif racha_dormir >= 1:
-                    return "Tu Rango Actual: Promesa"
-            print(rango_dormir(racha_dormir))
+    # Proceso dormir 8 horas
+    if opcion == 1:
+        print("\n¡Buena Elección! Dormir 8 horas mejorará tu ritmo de vida.")
+        when = input("¿Quieres empezar tu ciclo de sueño? (si/no): ").lower()
+        if when == "si":
+            horas_logradas = contador_horas_dormidas(8)
+            racha_dormir += 1
+            historial_dormir.append(horas_logradas)  # Guardar registro en lista
+            
+            print(f"\n¡Felicidades! Has completado el día. Racha actual: {racha_dormir} días.")
+            print(obtener_rango(racha_dormir))
 
-#......................................................
+    # Proceso ejercicio
+    elif opcion == 2:
+        print("\n¡Excelente Elección! El ejercicio te mantendrá activo.")
+        minutos_meta = minutos_diarias_ejercicio()
+        when = input("¿Quieres empezar tu ciclo de ejercicio? (si/no): ").lower()
+        if when == "si":
+            mins_logrados = contador_minutos_ejercicio(minutos_meta)
+            racha_ejercicio += 1
+            historial_ejercicio.append(mins_logrados)  # Guardar registro en lista
+            
+            print(f"\n¡Felicidades! Has completado el día. Racha actual: {racha_ejercicio} días.")
+            print(obtener_rango(racha_ejercicio))
 
-#procedimiento al escoger habito ejercicio
+    # Consultar historial
+    elif opcion == 3:
+        mostrar_historial()
 
-    elif opcion==2:
-        print("Excelente Elección!! Hacer ejercicio te mantendra activo durante el día. ")
-        opcion=minutos_diarias_ejercicio()
-        print("Cumple con tu hábito hoy y desbloquea tu primer día de racha. ")
-        when= input("Quieres empezar tu ciclo de ejercicio? (si/no): ")
-        if when=="si":
-            contador_minutos_ejercicio(opcion)
-            racha_ejercicio+=1
-            print(f"Felicidades!! Has completado tu primer día de racha. Tu racha actual es de {racha_ejercicio} días.") 
-            print(f"Disfruta tu día! No querras perder tu racha de {racha_ejercicio} días, te esperamos de nuevo. ")
-            def rango_ejercicio(racha_ejercicio):
-                if racha_ejercicio >= 30:
-                    return "Tu Rango Actual: Lider"
-                elif racha_ejercicio >= 14:
-                    return "Tu Rango Actual: Maestro"
-                elif racha_ejercicio >= 7:
-                    return "Tu Rango Actual: Contendiente"
-                elif racha_ejercicio >= 1:
-                    return "Tu Rango Actual: Promesa"
-            print(rango_ejercicio(racha_ejercicio))
-
-#......................................................
-
-#cerrar el programa
-
-    elif opcion==3:
-        print("La Diciplina No Es Una Opción, Nos Vemos Luego Guerrrero!")
-        break   
+    # Cerrar programa
+    elif opcion == 4:
+        print("\n¡La disciplina no es una opción! Nos vemos luego, guerrero.")
+        break 
+        
     else:
         print("Opción inválida. Por favor, selecciona una opción válida del menú.")
