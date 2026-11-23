@@ -1,4 +1,5 @@
 import time
+import os  
 
 # variables globales
 racha_dormir = 0
@@ -45,7 +46,46 @@ def contador_minutos_ejercicio(minutos):
 
 #......................................................
 
-# Creador de Perfil
+# Guardado de sesion
+def registro(nombre_registro, nombre, codigo, r_dormir, r_ejercicio, matriz, notas):
+    
+    with open(nombre_registro, "w", encoding="utf-8") as historial:
+        historial.write(f"Usuario|{nombre}|{codigo}\n")  
+        historial.write(f"Tus Rachas|{r_dormir}|{r_ejercicio}\n")  
+        for fila in matriz:
+            historial.write(f"Tiempo de Habito|{fila[0]}|{fila[1]}\n")  
+        for nota in notas:
+            nota_limpia = nota.replace("\n", " ").replace("|", "-")
+            historial.write(f"Notas de Habitos|{nota_limpia}\n") 
+
+#...................................................... 
+
+# Recuperador de sesion
+def cargar_registro(nombre_registro):
+    if not os.path.exists(nombre_registro):
+        return 0, 0, [], [], False
+
+    r_dormir = 0
+    r_ejercicio = 0
+    matriz = []
+    notas = []
+
+    with open(nombre_registro, "r", encoding="utf-8") as historial:
+        for linea in historial:
+            lineas = linea.strip().split("|")
+            if lineas[0] == "Tus Rachas":
+                r_dormir = int(lineas[1])
+                r_ejercicio = int(lineas[2])
+            elif lineas[0] == "Tiempo de Habito":
+                matriz.append([int(lineas[1]), int(lineas[2])])
+            elif lineas[0] == "Notas de Habitos":
+                notas.append(lineas[1])
+
+    return r_dormir, r_ejercicio, matriz, notas, True
+
+#......................................................
+
+# Creador de Perfil y Cargar Sesión
 nombre_inicial = input("Ingresa tu nombre de guerrero: ")
 nombre_usuario = nombre_inicial.strip().title()
 if not nombre_usuario:
@@ -54,6 +94,15 @@ if not nombre_usuario:
 codigo_unico = f"{nombre_usuario[:3].upper()}-{len(nombre_usuario):02d}"
 print(f"\n{' ERES BIENVENIDO '.center(40, '=')}")
 print(f"Usuario: {nombre_usuario} | Código: {codigo_unico}")
+
+registro_sesion = f"sesion_{codigo_unico}.txt"
+racha_dormir, racha_ejercicio, matriz_historial, notas_historial, sesion_cargada = cargar_registro(registro_sesion)
+
+if sesion_cargada:
+    print(f"¡Estas de vuelta! ({len(matriz_historial)} registros anteriores)")
+else:
+    registro(registro_sesion, nombre_usuario, codigo_unico, racha_dormir, racha_ejercicio, matriz_historial, notas_historial)
+    print(f"Registro Creado: {registro_sesion}")
 
 #.....................................................
 
@@ -93,6 +142,8 @@ while True:
             total_palabras = len(nota_sueño.split())
             notas_historial.append(f"[Sueño] {nota_sueño} ({total_palabras} palabras)")
 
+            registro(registro_sesion, nombre_usuario, codigo_unico, racha_dormir, racha_ejercicio, matriz_historial, notas_historial)
+
     #Proceso ejercicio
     elif opcion == "2":
         minutos_meta = int(input("¿Cuántos minutos vas a hacer? (45-120): "))
@@ -120,6 +171,8 @@ while True:
                 else:
                     categoria = enfoque.upper() if enfoque else "GENERAL"
                 notas_historial.append(f"[Ejercicio - {categoria}] {enfoque.capitalize()}")
+
+                registro(registro_sesion, nombre_usuario, codigo_unico, racha_dormir, racha_ejercicio, matriz_historial, notas_historial)
         else:
             print("Por favor ingresa un valor entre 45 y 120 minutos.")
 
@@ -163,7 +216,9 @@ while True:
 
     #Cerrar programa
     elif opcion == "5":
-        print("\n¡La disciplina no es una opción! Nos vemos luego, guerrero.")
+        registro(registro_sesion, nombre_usuario, codigo_unico, racha_dormir, racha_ejercicio, matriz_historial, notas_historial)
+        print(f"\nRegistro guardado en '{registro_sesion}'.") 
+        print("¡La disciplina no es una opción! Nos vemos luego, guerrero.")
         print(f"Buen Camino: {nombre_usuario.upper()} [{codigo_unico}]")
         break
 
